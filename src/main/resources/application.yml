@@ -1,0 +1,18 @@
+server:
+  port: 8078
+
+keycloak:
+  auth-server-url: http://localhost:8007/auth
+  realm: ayc
+  resource: ayc-service
+
+security:
+  cors:
+    origins: http://localhost:4200
+
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: ayc

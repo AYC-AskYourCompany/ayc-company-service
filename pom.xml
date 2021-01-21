@@ -13,19 +13,53 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ayc-company-service</name>
 	<description>Backend-service for the company&apos;s of AYC</description>
+
 	<properties>
 		<java.version>11</java.version>
+
+		<keycloak.version>11.0.3</keycloak.version>
+		<spring.version>2.4.0</spring.version>
+		<lombok.version>1.18.16</lombok.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-spring-boot-starter</artifactId>
+			<version>${keycloak.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>3.0.3.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ayc</groupId>
+			<artifactId>keycloak-security</artifactId>
+			<version>0.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>ayc</groupId>
+			<artifactId>exception-handler</artifactId>
+			<version>0.0.3</version>
 		</dependency>
 	</dependencies>
 

@@ -15,5 +15,5 @@ public class CompanyEntity {
     private String companyName;
     private String companyDescription;
     private String ceo;
-    private List<String> companyMember;
+    private List<CompanyMemberDTO> companyMembers;
 }

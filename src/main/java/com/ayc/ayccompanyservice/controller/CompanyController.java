@@ -7,6 +7,8 @@ import com.ayc.exceptionhandler.exception.NotAuthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/company")
 public class CompanyController {
@@ -17,6 +19,11 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     public CompanyEntity getCompanyById(@PathVariable("companyId") String companyId) throws EntityNotFoundException, NotAuthorizedException {
         return this.companyService.getCompanyById(companyId);
+    }
+
+    @GetMapping
+    public List<CompanyEntity> getCompanyByUsername() {
+        return this.companyService.getCompanyByUsername();
     }
 
     @PostMapping

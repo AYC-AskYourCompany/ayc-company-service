@@ -2,6 +2,7 @@ package com.ayc.ayccompanyservice.service;
 
 import com.ayc.ayccompanyservice.consts.ErrorConst;
 import com.ayc.ayccompanyservice.model.CompanyEntity;
+import com.ayc.ayccompanyservice.model.CompanyMemberDTO;
 import com.ayc.ayccompanyservice.repository.CompanyRepository;
 import com.ayc.exceptionhandler.exception.EntityNotFoundException;
 import com.ayc.exceptionhandler.exception.NotAuthorizedException;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CompanyService {
@@ -26,9 +28,14 @@ public class CompanyService {
         return company;
     }
 
+    public List<CompanyEntity> getCompanyByUsername() {
+        return this.companyRepository.findAllByCeoOrCompanyMembers(
+                this.securityUtil.getUsername(), new CompanyMemberDTO(this.securityUtil.getUsername()));
+    }
+
     public CompanyEntity saveCompany(CompanyEntity company) {
-        if (company.getCompanyMember() == null) {
-            company.setCompanyMember(new ArrayList<String>());
+        if (company.getCompanyMembers() == null) {
+            company.setCompanyMembers(new ArrayList<>());
         }
         if (company.getCeo() == null) {
             company.setCeo(this.securityUtil.getUsername());
@@ -47,7 +54,7 @@ public class CompanyService {
         CompanyEntity company = this.findCompanyById(companyId);
 
         this.securityUtil.isAdminOrUser(username);
-        company.getCompanyMember().add(username);
+        company.getCompanyMembers().add(new CompanyMemberDTO(username));
 
         return this.companyRepository.save(company);
     }
@@ -56,7 +63,7 @@ public class CompanyService {
         CompanyEntity company = this.findCompanyById(companyId);
 
         this.securityUtil.isAdminOrUser(username);
-        company.getCompanyMember().remove(username);
+        company.getCompanyMembers().remove(new CompanyMemberDTO(username));
 
         return this.companyRepository.save(company);
     }
@@ -74,8 +81,8 @@ public class CompanyService {
                 .orElseThrow((() -> new EntityNotFoundException(String.format(ErrorConst.COMPANY_NOT_FOUND, companyId))));
         Boolean projectMemberOrCeo = this.securityUtil.getUsername().equals(company.getCeo());
 
-        for (String companyMember : company.getCompanyMember()) {
-            if (companyMember.equals(this.securityUtil.getUsername())) {
+        for (CompanyMemberDTO companyMember : company.getCompanyMembers()) {
+            if (companyMember.getCompanyMember().equals(this.securityUtil.getUsername())) {
                 projectMemberOrCeo = true;
             }
         }
